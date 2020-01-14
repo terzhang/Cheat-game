@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Input from '../components/Input';
 import useLogin from '../hooks/useLogin';
+import { Context as gameContext } from '../contexts/game';
+import useStartGame from '../hooks/useStartGame';
 
 export default function Auth() {
   const login = useLogin();
@@ -12,8 +14,28 @@ export default function Auth() {
     login(player); // use the login hook to pass player object to player state and login
   };
 
-  return (
-    <div className='App'>
+  const {
+    state: { self },
+  } = useContext(gameContext);
+
+  const startGame = useStartGame();
+
+  const handleStart = () => {
+    // generate a hand for each player
+    startGame();
+    // display own hand
+
+    // decide who is the starting dealer
+    // decide a starting card
+    // display round actions
+  };
+
+  const AuthToStart = () => {
+    return self ? (
+      <button type='button' onClick={handleStart}>
+        Start Game!
+      </button>
+    ) : (
       <Input
         label='Please enter your name'
         aria-label={'name'}
@@ -21,6 +43,8 @@ export default function Auth() {
         placeholder='Please enter your name'
         onSubmit={handleSubmit}
       />
-    </div>
-  );
+    );
+  };
+
+  return <div className='App'>{AuthToStart()}</div>;
 }
