@@ -46,7 +46,7 @@ const addPlayer = (dispatch) => (player) => {
 };
 // add many players to the state array
 const addPlayers = (dispatch) => (players) => {
-  dispatch({ type: 'addPlayer', payload: players });
+  dispatch({ type: 'addPlayers', payload: players });
 };
 
 // remove a player from the state array

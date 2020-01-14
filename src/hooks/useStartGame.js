@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Context as gameContext } from '../contexts/game';
-import { Context as playerContext } from '../contexts/game';
+import { Context as playerContext } from '../contexts/players';
 
 const useStartGame = () => {
   const { state: game, startGame, setDeck } = useContext(gameContext);
@@ -49,8 +49,9 @@ const useStartGame = () => {
   };
 
   return () => {
+    const npcs = generateNpc();
     // add the generated npc into the players state
-    addPlayers(generateNpc());
+    addPlayers(npcs);
     // assign hands to everyone
     distribute();
     // tell game state it has started
