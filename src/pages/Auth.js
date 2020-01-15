@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Input from '../components/Input';
 import useLogin from '../hooks/useLogin';
 import { Context as gameContext } from '../contexts/game';
+import { Context as playerContext } from '../contexts/players';
 import useStartOffline from '../hooks/useStartOffline';
+import Hand from '../components/Hand';
 
 export default function Auth() {
+  const [hand, setHand] = React.useState([]);
+  const [displayHand, setDisplayHand] = React.useState(false);
   const login = useLogin();
 
   const handleSubmit = (name) => {
@@ -18,13 +22,22 @@ export default function Auth() {
     state: { self },
   } = useContext(gameContext);
 
+  const { state: players } = useContext(playerContext);
+
+  const myself = () => {
+    for (let player of players) {
+      console.log(player.id, '=', self, '?');
+      if (player.id === self) return player;
+    }
+  };
+
   const startOffline = useStartOffline();
 
   const handleStart = () => {
     // generate a hand for each player
     startOffline();
     // display own hand
-
+    setDisplayHand(true);
     // decide who is the starting dealer
     // decide a starting card
     // display round actions
@@ -46,5 +59,16 @@ export default function Auth() {
     );
   };
 
-  return <div className='App'>{AuthToStart()}</div>;
+  return (
+    <div className='App' style={{ display: 'flex' }}>
+      {displayHand ? (
+        <Hand
+          handArray={myself().hand}
+          wrapperStyle={{ justifyContent: 'center' }}
+        />
+      ) : (
+        AuthToStart()
+      )}
+    </div>
+  );
 }

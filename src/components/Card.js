@@ -6,13 +6,14 @@ const Card = ({ style, card, ...rest }) => {
       style={{
         height: '20rem',
         width: '20rem',
-        border: '2rem solid',
+        border: '2px solid',
         display: 'flex',
+        backgroundColor: 'white',
         ...style,
       }}
       {...rest}
     >
-      <span style={{ padding: '25px' }}>{card}</span>
+      <span style={{ padding: '5px' }}>{card}</span>
     </div>
   );
 };
