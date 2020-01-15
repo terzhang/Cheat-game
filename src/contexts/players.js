@@ -29,34 +29,51 @@ const playerReducer = (state, action) => {
 
 const pickIndexFromArray = (array) => Math.floor(Math.random() * array.length);
 
+function arraySwapAndPop(index, array) {
+  array[index] = array[array.length - 1];
+  array.pop();
+}
+
 // take out a numbers of card from given deck and return it
 const popCardsFromDeck = (cardNum, deck) => {
+  let tempCards = [...deck]; // to be mutated
   let cards = [];
   // pop {cardNum} amount of cards out
   for (let i = 0; i < cardNum; i++) {
-    // pick an card at random from deck
-    const cardIndex = pickIndexFromArray(deck);
-    const card = deck[cardIndex];
+    // pick a card at random from temp deck
+    const pickedIndex = pickIndexFromArray(tempCards);
+    const pickedCard = tempCards[pickedIndex];
+
     // add the picked card to the cards array
-    cards.push(card);
-    //// remove that card from deck by its index
-    //// deck = deck.splice(cardIndex, 1);
+    cards.push(pickedCard);
+    // but delete it from the temp deck
+    arraySwapAndPop(pickedIndex, tempCards);
   }
   return cards; // return the popped cards
 };
 
+const arrayRemoveManyByItem = (itemArray, array) => {
+  return array.filter((item) => !itemArray.includes(item));
+};
+
 const distributeHandsToAll = (dispatch) => (deck, players) => {
+  let tempDeck = [...deck];
   const distributedCards = [];
   const cardNumPerPlayer = Math.round(deck.length / players.length);
   // generate a new array of players each with a portion of the deck
   const newPlayers = players.map((player) => {
-    const newHand = popCardsFromDeck(cardNumPerPlayer, deck);
-    distributedCards.push(newHand);
+    // randomly take cards from the deck and return each players with it
+    const newHand = popCardsFromDeck(cardNumPerPlayer, tempDeck);
+    // ? solution: remove cards from deck after popping hand
+    tempDeck = arrayRemoveManyByItem(newHand, tempDeck);
+    distributedCards.push(...newHand);
     return { ...player, hand: newHand };
   });
+
   setPlayers(dispatch)(newPlayers);
   // return a flattened array of the distributed cards
-  return distributedCards.flat(Infinity);
+  const flatDistributedCards = distributedCards.flat(Infinity);
+  return flatDistributedCards;
 };
 
 // replace the whole state
