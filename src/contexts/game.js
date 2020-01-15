@@ -7,8 +7,8 @@ const game = {
   dealtCards: [],
   started: false,
   self: null,
-  totalCards: TOTAL_CARDS,
-  playerNum: PLAYER_NUM,
+  /* totalCards: TOTAL_CARDS, */
+  /* playerNum: PLAYER_NUM, */
   deck: DECK,
 };
 
@@ -25,8 +25,8 @@ const gameReducer = (state, action) => {
         started: false,
         self: null,
         dealtCard: [],
-        totalCards: TOTAL_CARDS,
-        playerNum: PLAYER_NUM,
+        /* totalCards: TOTAL_CARDS, */
+        /* playerNum: PLAYER_NUM, */
         deck: DECK,
       };
     case 'addDealtCards':
@@ -35,10 +35,10 @@ const gameReducer = (state, action) => {
       return { ...state, dealtCards: [] };
     case 'shuffleDealtCards':
       return { ...state, dealtCards: payload };
-    case 'setTotalCards':
-      return { ...state, totalCards: payload };
-    case 'setPlayerNum':
-      return { ...state, playerNum: payload };
+    /*     case 'setTotalCards':
+      return { ...state, totalCards: payload }; */
+    /*     case 'setPlayerNum':
+      return { ...state, playerNum: payload }; */
     case 'setDeck':
       return { ...state, deck: payload };
     default:
@@ -46,14 +46,14 @@ const gameReducer = (state, action) => {
   }
 };
 
-const setTotalCards = (dispatch) => (totalCards) => {
+/* const setTotalCards = (dispatch) => (totalCards) => {
   dispatch({ type: 'setTotalCards', payload: totalCards });
 };
 
 const setPlayerNum = (dispatch) => (playerNum) => {
   // TODO: clamp num between 2 - 5
   dispatch({ type: 'setPlayerNum', payload: playerNum });
-};
+}; */
 
 const setDeck = (dispatch) => (deck) => {
   dispatch({ type: 'setDeck', payload: deck });
@@ -95,8 +95,8 @@ const gameActions = {
   addDealtCards,
   clearDealtCards,
   shuffleDealtCards,
-  setTotalCards,
-  setPlayerNum,
+  /* setTotalCards,
+  setPlayerNum, */
   setDeck,
 };
 
