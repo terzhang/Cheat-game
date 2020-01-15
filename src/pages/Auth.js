@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Input from '../components/Input';
 import useLogin from '../hooks/useLogin';
 import { Context as gameContext } from '../contexts/game';
-import useStartGame from '../hooks/useStartGame';
+import useStartOffline from '../hooks/useStartOffline';
 
 export default function Auth() {
   const login = useLogin();
@@ -18,11 +18,11 @@ export default function Auth() {
     state: { self },
   } = useContext(gameContext);
 
-  const startGame = useStartGame();
+  const startOffline = useStartOffline();
 
   const handleStart = () => {
     // generate a hand for each player
-    startGame();
+    startOffline();
     // display own hand
 
     // decide who is the starting dealer

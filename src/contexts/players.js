@@ -27,6 +27,38 @@ const playerReducer = (state, action) => {
   }
 };
 
+const pickIndexFromArray = (array) => Math.floor(Math.random() * array.length);
+
+// take out a numbers of card from given deck and return it
+const popCardsFromDeck = (cardNum, deck) => {
+  let cards = [];
+  // pop {cardNum} amount of cards out
+  for (let i = 0; i < cardNum; i++) {
+    // pick an card at random from deck
+    const cardIndex = pickIndexFromArray(deck);
+    const card = deck[cardIndex];
+    // add the picked card to the cards array
+    cards.push(card);
+    //// remove that card from deck by its index
+    //// deck = deck.splice(cardIndex, 1);
+  }
+  return cards; // return the popped cards
+};
+
+const distributeHandsToAll = (dispatch) => (deck, players) => {
+  const distributedCards = [];
+  const cardNumPerPlayer = Math.round(deck.length / players.length);
+  // generate a new array of players each with a portion of the deck
+  const newPlayers = players.map((player) => {
+    const newHand = popCardsFromDeck(cardNumPerPlayer, deck);
+    distributedCards.push(newHand);
+    return { ...player, hand: newHand };
+  });
+  setPlayers(dispatch)(newPlayers);
+  // return a flattened array of the distributed cards
+  return distributedCards.flat(Infinity);
+};
+
 // replace the whole state
 const setPlayers = (dispatch) => (newPlayers) => {
   dispatch({
@@ -63,7 +95,7 @@ const replacePlayer = (dispatch) => (player, state) => {
     }
     return thisPlayer;
   });
-  dispatch({ type: 'setPlayer', payload: newPlayers });
+  dispatch({ type: 'replacePlayer', payload: newPlayers });
 };
 
 // change the hand of the player with given id
@@ -94,6 +126,8 @@ const playerActions = {
   setName,
   setPlayers,
   resetPlayers,
+  distributeHandsToAll,
+  /* startOffline, */
 };
 
 export const { Context, Provider } = createDataContext({
