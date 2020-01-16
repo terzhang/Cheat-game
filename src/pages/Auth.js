@@ -7,6 +7,7 @@ import Hand from '../components/Hand'; // components
 import { Flex, Button } from '@chakra-ui/core';
 import CardSlider from '../components/CardSlider';
 import AuthInput from '../components/AuthInput';
+import { navigate } from 'hookrouter';
 
 export default function Auth() {
   const [displayHand, setDisplayHand] = React.useState(false);
@@ -37,6 +38,7 @@ export default function Auth() {
   const handleStart = () => {
     // generate a hand for each player
     startOffline();
+    navigate('/room');
     // display own hand
     setDisplayHand(true);
     // decide who is the starting dealer
@@ -52,14 +54,6 @@ export default function Auth() {
     );
     // null;
   };
-
-  /* <Input
-        label='Please enter your name'
-        aria-label={'name'}
-        name='name'
-        placeholder='Please enter your name'
-        onSubmit={handleSubmit}
-      /> */
 
   return (
     <Flex as='main' justify='center' direction='column' size='auto'>
