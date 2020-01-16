@@ -1,13 +1,14 @@
 import React, { useContext, useEffect } from 'react';
-import Input from '../components/Input';
-import useLogin from '../hooks/useLogin';
-import { Context as gameContext } from '../contexts/game';
+import { Context as gameContext } from '../contexts/game'; // contexts
 import { Context as playerContext } from '../contexts/players';
+import useLogin from '../hooks/useLogin'; // hooks
 import useStartOffline from '../hooks/useStartOffline';
-import Hand from '../components/Hand';
+import Hand from '../components/Hand'; // components
+import { Flex, Button } from '@chakra-ui/core';
+import CardSlider from '../components/CardSlider';
+import AuthInput from '../components/AuthInput';
 
 export default function Auth() {
-  const [hand, setHand] = React.useState([]);
   const [displayHand, setDisplayHand] = React.useState(false);
   const login = useLogin();
 
@@ -45,30 +46,34 @@ export default function Auth() {
 
   const AuthToStart = () => {
     return self ? (
-      <button type='button' onClick={handleStart}>
-        Start Game!
-      </button>
+      <Button onClick={handleStart}>Start Game!</Button>
     ) : (
-      <Input
+      <AuthInput label='Please enter your name' onSubmit={handleSubmit} />
+    );
+    // null;
+  };
+
+  /* <Input
         label='Please enter your name'
         aria-label={'name'}
         name='name'
         placeholder='Please enter your name'
         onSubmit={handleSubmit}
-      />
-    );
-  };
+      /> */
 
   return (
-    <div className='App' style={{ display: 'flex' }}>
-      {displayHand ? (
-        <Hand
-          handArray={myself().hand}
-          wrapperStyle={{ justifyContent: 'center' }}
-        />
-      ) : (
-        AuthToStart()
-      )}
-    </div>
+    <Flex as='main' justify='center' direction='column' size='auto'>
+      <Flex direction='row' justify='center' size='auto' w='100%'>
+        {displayHand ? (
+          <Hand
+            handArray={myself().hand}
+            wrapperStyle={{ justifyContent: 'center' }}
+          />
+        ) : (
+          AuthToStart()
+        )}
+      </Flex>
+      <CardSlider currentCardNum={0} />
+    </Flex>
   );
 }
