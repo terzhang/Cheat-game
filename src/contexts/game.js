@@ -1,6 +1,6 @@
 import createDataContext from '../utils/createDataContext';
 import shuffle from '../utils/shuffle';
-import { TOTAL_CARDS, PLAYER_NUM } from '../constants/cards';
+// import { TOTAL_CARDS, PLAYER_NUM } from '../constants/cards';
 import DECK from '../constants/deck';
 
 const game = {
