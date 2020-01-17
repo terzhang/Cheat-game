@@ -27,7 +27,7 @@ export default function SliderInput({ currentCardNum }) {
   };
 
   return (
-    <Flex w='50%' m={'auto'}>
+    <Flex w='50%'>
       <NumberInput
         maxW='100px'
         mr='2rem'

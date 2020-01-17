@@ -1,13 +1,6 @@
 import React from 'react';
 import useInput from '../hooks/useInput';
-import {
-  Flex,
-  Input,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Button,
-} from '@chakra-ui/core';
+import { Flex, Input, FormControl, FormLabel, Button } from '@chakra-ui/core';
 
 // a single field uncontroller input component that relays its state to parent on submit
 const AuthInput = ({ label, onSubmit, ...rest }) => {
