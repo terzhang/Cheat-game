@@ -1,7 +1,6 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
 import React from 'react';
 import Card from './Card';
+import { Flex, List, ListItem } from '@chakra-ui/core';
 
 const Hand = ({
   wrapperStyle,
@@ -17,7 +16,7 @@ const Hand = ({
 
   if (mode !== 'spread' || 'straight') mode = 'spread';
 
-  const extraCardStyle = (index) => ({
+  const animatedCardStyle = (index) => ({
     // subsequent cards is on top of previous card
     zIndex: index,
     // and shifted to the right a bit
@@ -25,8 +24,8 @@ const Hand = ({
     transformOrigin: '50% 120%', // from bottom
     transform: `translateX(${CARD_WIDTH * 0.2}px) rotateZ(${SPAN_START_DEG +
       (SPAN_DEG / handArray.length) * index}deg)`,
-    // hovering enlarge (and shift it up?)
-    ':hover': {
+    // hovering enlarges card (chakra use _[pseudoSelecterName] instead of :[pesudoSelectorName])
+    _hover: {
       zIndex: 99,
       transform: `scale(1.2) translateX(${CARD_WIDTH *
         0.2}px) rotateZ(${SPAN_START_DEG +
@@ -41,23 +40,27 @@ const Hand = ({
   };
 
   return (
-    <div style={{ margin: 'auto', justifySelf: 'end', ...wrapperStyle }}>
-      <ul style={listContainer}>
-        {handArray.map((card, index) => {
+    <Flex m='auto' justify='flex-end' {...wrapperStyle}>
+      <List {...listContainer}>
+        {handArray.map((cardName, index) => {
           return (
-            <li css={{ position: 'absolute', ...extraCardStyle(index) }}>
+            <ListItem
+              position='absolute'
+              key={cardName}
+              {...animatedCardStyle(index)}
+            >
               <Card
-                card={card}
+                cardName={cardName}
                 style={{
                   height: CARD_HEIGHT + 'px',
                   width: CARD_WIDTH + 'px',
                 }}
               />
-            </li>
+            </ListItem>
           );
         })}
-      </ul>
-    </div>
+      </List>
+    </Flex>
   );
 };
 

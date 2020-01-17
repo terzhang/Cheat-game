@@ -1,20 +1,21 @@
 import React from 'react';
+import { Flex, Text } from '@chakra-ui/core';
 
-const Card = ({ style, card, ...rest }) => {
+const Card = ({ style, cardName, ...rest }) => {
   return (
-    <div
-      style={{
-        height: '20rem',
-        width: '20rem',
-        border: '2px solid',
-        display: 'flex',
-        backgroundColor: 'white',
-        ...style,
-      }}
+    <Flex
+      w='20rem'
+      height='20rem'
+      border='2px solid'
+      borderRadius='md'
+      backgroundColor={'white'}
+      {...style}
       {...rest}
     >
-      <span style={{ padding: '5px' }}>{card}</span>
-    </div>
+      <Text as='span' p='5px' fontSize='sm'>
+        {cardName}
+      </Text>
+    </Flex>
   );
 };
 
