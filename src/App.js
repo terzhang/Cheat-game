@@ -1,12 +1,15 @@
 import React from 'react';
-import './App.css';
 import Providers from './Providers';
 import Auth from './pages/Auth';
 import Room from './pages/Room';
+import Game from './pages/Game';
 import { CSSReset } from '@chakra-ui/core';
-import { useRoutes } from 'hookrouter';
+import { Global } from '@emotion/core';
+import global from './theme/global';
+import { useRoutes, useRedirect } from 'hookrouter';
 
 const routes = {
+  '/game': () => <Game />,
   '/': () => <Auth />,
   '/room': () => <Room />,
 };
@@ -14,10 +17,11 @@ const routes = {
 const Router = () => useRoutes(routes);
 
 function App() {
-  // const router = useRoutes(routes);
+  useRedirect('/room', '/');
   return (
     <Providers>
       <CSSReset />
+      <Global styles={global} />
       <Router />
     </Providers>
   );

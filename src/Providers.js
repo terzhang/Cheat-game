@@ -3,7 +3,7 @@ import { Provider as PlayerProvider } from './contexts/players';
 import { Provider as RoundProvider } from './contexts/round';
 import { Provider as GameProvider } from './contexts/game';
 import { ThemeProvider } from '@chakra-ui/core';
-import theme from './theme';
+// import theme from './theme';
 
 // HOF provider provider
 const Providers = ({ children }) => (
