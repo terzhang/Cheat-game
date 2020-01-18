@@ -24,14 +24,17 @@ const Game = () => {
   const [queryParams, setQueryParams] = useQueryParams();
   const [myHand, setMyHand] = useState(null);
   const [cardToCall, setCardToCall] = useState(null);
-  const [roundNum, setRoundNum] = useState(0);
+  const [online, setOnline] = useState(null);
 
   const {
     state: { self },
   } = useContext(gameContext);
+
   const {
-    state: { dealer },
+    state: { dealer, dealtCard },
+    setDealtCard,
   } = useContext(roundContext);
+
   const { state: players } = useContext(playerContext);
 
   // method that return your own player object
@@ -49,17 +52,21 @@ const Game = () => {
 
   const toast = useToast();
 
+  const toastConfig = {
+    position: 'top',
+    status: 'info',
+    duration: 2500,
+    isClosable: true,
+    title: '',
+    description: '',
+  };
+
   // pick a dealer and start the new or next round
   useEffect(() => {
+    // set state if game is online or offline
     const online = queryParams.isOnline;
-    const toastConfig = {
-      position: 'top',
-      status: 'info',
-      duration: 2500,
-      isClosable: true,
-      title: '',
-      description: '',
-    };
+    setOnline(online);
+    // make a toast
     if (!online) {
       // show toast that you're playing offline.
       toast({
@@ -83,6 +90,7 @@ const Game = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // side effect for own hand
   useEffect(() => {
     // if name is valid, get own hand
     if (self) {
@@ -91,7 +99,23 @@ const Game = () => {
       setMyHand(hand);
     }
     // if we are the dealer, show option
-  }, [players, self, myself, isDealer]);
+  }, [players, self, myself]);
+
+  // side effect for dealt card events
+  useEffect(() => {
+    // if we're not the dealer, wait for someone to deal a card
+    // if state of dealtCard is not null, make a toast.
+    if (!online && dealtCard) {
+      toast({
+        ...toastConfig,
+        position: 'bottom-right',
+        title: `${dealer.name} called out ${dealtCard}`,
+        description: '',
+      });
+    }
+    // back to null on unmount
+    return () => setDealtCard(null);
+  }, [dealer.name, dealtCard, online, setDealtCard, toast, toastConfig]);
 
   const handleSliderChange = () => {};
 
@@ -134,7 +158,7 @@ const Game = () => {
       {isDealer() && { cardSelector }}
       <Alert status='info'>
         <AlertIcon />
-        {isDealer() ? 'You are the dealer' : `is the dealer`}
+        {isDealer() ? 'You are the dealer' : `${dealer.name} is the dealer`}
       </Alert>
     </Flex>
   );
