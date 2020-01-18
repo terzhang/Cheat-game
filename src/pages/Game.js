@@ -1,5 +1,13 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Flex, Button, useToast, Image, Spinner } from '@chakra-ui/core';
+import {
+  Flex,
+  Button,
+  useToast,
+  Image,
+  Spinner,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/core';
 import { navigate, useQueryParams } from 'hookrouter';
 import Hand from '../components/Hand'; // components
 import { Context as gameContext } from '../contexts/game'; // contexts
@@ -16,6 +24,8 @@ const Game = () => {
   const [queryParams, setQueryParams] = useQueryParams();
   const [myHand, setMyHand] = useState(null);
   const [cardToCall, setCardToCall] = useState(null);
+  const [roundNum, setRoundNum] = useState(0);
+
   const {
     state: { self },
   } = useContext(gameContext);
@@ -24,6 +34,7 @@ const Game = () => {
   } = useContext(roundContext);
   const { state: players } = useContext(playerContext);
 
+  // method that return your own player object
   const myself = React.useCallback(() => {
     for (let player of players) {
       if (player.id === self) {
@@ -34,7 +45,7 @@ const Game = () => {
 
   const isDealer = useCallback(() => dealer === self, [dealer, self]);
 
-  const nextRound = useNextRound();
+  const nextRound = useNextRound(); // hook that goes to next round & does necessary state changes
 
   const toast = useToast();
 
@@ -49,7 +60,6 @@ const Game = () => {
       title: '',
       description: '',
     };
-    // offline, then
     if (!online) {
       // show toast that you're playing offline.
       toast({
@@ -81,7 +91,7 @@ const Game = () => {
       setMyHand(hand);
     }
     // if we are the dealer, show option
-  }, [players, self, myself]);
+  }, [players, self, myself, isDealer]);
 
   const handleSliderChange = () => {};
 
@@ -121,7 +131,11 @@ const Game = () => {
       {myHand && (
         <Hand handArray={myHand} wrapperStyle={{ justifyContent: 'center' }} />
       )}
-      {isDealer() && cardSelector}
+      {isDealer() && { cardSelector }}
+      <Alert status='info'>
+        <AlertIcon />
+        {isDealer() ? 'You are the dealer' : `is the dealer`}
+      </Alert>
     </Flex>
   );
 };
