@@ -7,7 +7,7 @@ const pickIndexFromArray = (array) => Math.floor(Math.random() * array.length);
 
 const useNextRound = () => {
   const { state: players } = useContext(playerContext);
-  const { state: game, addDealtCards } = useContext(gameContext);
+  const { state: addDealtCards } = useContext(gameContext);
   const { state: round, nextRoundWithNewDealer } = useContext(roundContext);
 
   function endGame(dealer) {
@@ -45,12 +45,13 @@ const useNextRound = () => {
     if (round.victor) {
       endGame(round.dealer);
     }
-    // push current dealt card to the dealt cards array
-    addDealtCards(round.dealtCard);
+    // push current dealt card to the dealt cards array (if there is any)
+    // there won't be any if it's a new game
+    if (round.dealtCard) addDealtCards(round.dealtCard);
     nextRoundWithNewDealer(nextDealer());
   };
 
-  return { nextRound };
+  return nextRound;
 };
 
 export default useNextRound;
