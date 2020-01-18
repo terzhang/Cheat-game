@@ -1,10 +1,10 @@
 import createDataContext from '../utils/createDataContext';
 
 const round = {
-  dealer: null,
+  dealer: { id: null, name: '' },
   index: null,
-  challenger: null,
-  victor: null,
+  challenger: { id: null, name: null },
+  victor: { id: null, name: null },
   dealtCard: null,
 };
 
@@ -13,18 +13,18 @@ const roundReducer = (state, action) => {
     case 'setDealer':
       return { ...state, dealer: action.payload };
     case 'setChallenger':
-      return { ...state, dealer: action.payload };
+      return { ...state, challenger: action.payload };
     case 'setVictor':
-      return { ...state, dealer: action.payload };
+      return { ...state, victor: action.payload };
     case 'setDealtCard':
       return { ...state, dealtCard: action.payload };
     case 'nextRoundWithNewDealer':
       return {
         ...state,
-        dealer: null,
+        dealer: { id: null, name: '' },
         index: state.index + 1,
         dealtCard: null,
-        challenger: null,
+        challenger: { id: null, name: '' },
       };
     case 'resetRound':
       return round;
