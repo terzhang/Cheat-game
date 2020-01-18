@@ -22,33 +22,34 @@ const useNextRound = () => {
   function getDealerIndex() {
     for (const [index, player] of players.entries()) {
       // return the dealer index
-      if (round.dealerId === player.id) return index;
+      if (round.dealer.id === player.id) return index;
     }
   }
 
   const nextDealer = () => {
     let playerIndex;
-    if (!round.dealer) {
+    if (!round.dealer.id) {
       // no dealer -> set a random player as dealer
       playerIndex = pickIndexFromArray(players);
     } else {
       // otherwise set the next player in the index as dealer
       playerIndex = getDealerIndex() + 1;
     }
-    // get the playerId of the player next to be the dealer
-    const playerId = players[playerIndex];
-    return playerId;
+    // get the id and name of the player next to be dealer
+    const { id, name } = players[playerIndex];
+    return { id, name };
   };
 
   const nextRound = () => {
     // check if dealer won
-    if (round.victor) {
-      endGame(round.dealer);
+    if (round.victor.id) {
+      endGame(round.dealer.id);
     }
     // push current dealt card to the dealt cards array (if there is any)
     // there won't be any if it's a new game
     if (round.dealtCard) addDealtCards(round.dealtCard);
-    nextRoundWithNewDealer(nextDealer());
+    const newDealer = nextDealer();
+    nextRoundWithNewDealer(newDealer);
   };
 
   return nextRound;
