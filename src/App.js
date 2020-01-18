@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Providers from './Providers';
-import Auth from './pages/Auth';
-import Room from './pages/Room';
-import Game from './pages/Game';
-import { CSSReset } from '@chakra-ui/core';
+
+import { CSSReset, Spinner } from '@chakra-ui/core';
 import { Global } from '@emotion/core';
 import global from './theme/global';
 import { useRoutes, useRedirect } from 'hookrouter';
+const Auth = lazy(() => import('./pages/Auth'));
+const Room = lazy(() => import('./pages/Room'));
+const Game = lazy(() => import('./pages/Game'));
 
 const routes = {
   '/game': () => <Game />,
@@ -22,7 +23,9 @@ function App() {
     <Providers>
       <CSSReset />
       <Global styles={global} />
-      <Router />
+      <Suspense fallback={<Spinner color='gray' />}>
+        <Router />
+      </Suspense>
     </Providers>
   );
 }
